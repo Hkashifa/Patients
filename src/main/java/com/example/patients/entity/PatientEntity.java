@@ -31,6 +31,6 @@ public class PatientEntity extends BaseEntity{
     @Column(name = "contactNumber")
     private String contactNumber;
 
-    @Column(name = "actvieStatus")
+    @Column(name = "activeStatus")
     private ActiveStatus activeStatus = ActiveStatus.ACTIVE;
 }

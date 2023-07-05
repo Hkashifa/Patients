@@ -30,21 +30,13 @@ public class PatientServiceImpl implements PatientService {
     }
     @Override
     public List<PatientDto> getAllPatient() {
+
         //DTO to Entity
-        List<PatientEntity> active_patients = new ArrayList<>();
-        List<PatientEntity> all_patients = patientRepository.findAll();
 
-        for (PatientEntity patient_holder : all_patients) {
-            // Print all elements of ArrayList
-            if (patient_holder.getActiveStatus() == ActiveStatus.ACTIVE) {
+        List<PatientEntity> all_patients = patientRepository.findByActiveStatus(ActiveStatus.ACTIVE.getValue());
 
-                active_patients.add(patient_holder);
-
-            }
-        }
-
-
-        return active_patients.stream().map(patient -> modelMapper.map(patient, PatientDto.class))
+        return all_patients.stream().
+                map(patient -> modelMapper.map(patient, PatientDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -61,24 +53,23 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDto updatePatient(Long id, PatientDto patientdto) {
         //Dto to entity
-        PatientEntity patientEntityResponse = modelMapper.map(patientdto, PatientEntity.class);
+        // PatientEntity patientEntityResponse = modelMapper.map(patientdto, PatientEntity.class);
         Optional<PatientEntity> updated_patient = patientRepository.findById(id);
 
         if (updated_patient.isPresent()) {
-            PatientEntity patient_entity = updated_patient.get();
+            PatientEntity patientEntity = updated_patient.get();
 
-            patient_entity.setFirstName(patientEntityResponse.getFirstName());
-            patient_entity.setLastName(patientEntityResponse.getLastName());
-            patient_entity.setGender(patientEntityResponse.getGender());
-            patient_entity.setEmail(patientEntityResponse.getEmail());
-            patient_entity.setAge(patient_entity.getAge());
-            patient_entity.setAddress(patient_entity.getAddress());
-            patient_entity.setContactNumber(patient_entity.getContactNumber());
+            patientEntity.setFirstName(patientdto.getFirstName());
+            patientEntity.setLastName(patientdto.getLastName());
+            patientEntity.setGender(patientdto.getGender());
+            patientEntity.setEmail(patientdto.getEmail());
+            patientEntity.setAge(patientdto.getAge());
+            patientEntity.setAddress(patientdto.getAddress());
+            patientEntity.setContactNumber(patientdto.getContactNumber());
 
-
-            patientRepository.save(patient_entity);//
+            patientRepository.save(patientEntity);//
             // entity to DTO
-            PatientDto patientResponse = modelMapper.map(patient_entity, PatientDto.class);
+            PatientDto patientResponse = modelMapper.map(patientEntity, PatientDto.class);
             return patientResponse;
         }
         return null;
