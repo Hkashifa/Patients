@@ -1,6 +1,7 @@
 package com.example.patients.repository;
 
 import com.example.patients.entity.PatientEntity;
+import com.example.patients.entity.enums.ActiveStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,9 +11,7 @@ import java.util.List;
 
 @Repository
 public interface PatientRepository extends JpaRepository <PatientEntity,Long>{
+   List<PatientEntity> findAllByActiveStatusOrderByIdDesc(ActiveStatus status);
 
 
-//    @Query(value = "SELECT * FROM patient WHERE activeStatus = :ACTIVE", nativeQuery = true)
-//    List<PatientEntity> findByActiveStatus(@Param("activeStatus") String activeStatus);
-    List<PatientEntity> findByActiveStatus( int activeStatus);
 }

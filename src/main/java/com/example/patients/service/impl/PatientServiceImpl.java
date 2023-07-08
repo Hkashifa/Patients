@@ -33,11 +33,9 @@ public class PatientServiceImpl implements PatientService {
 
         //DTO to Entity
 
-        List<PatientEntity> all_patients = patientRepository.findByActiveStatus(ActiveStatus.ACTIVE.getValue());
+        List<PatientEntity> all_patients = patientRepository.findAllByActiveStatusOrderByIdDesc(ActiveStatus.ACTIVE);
 
-        return all_patients.stream().
-                map(patient -> modelMapper.map(patient, PatientDto.class))
-                .collect(Collectors.toList());
+        return all_patients
     }
 
     @Override
